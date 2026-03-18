@@ -7,9 +7,9 @@ from pathlib import Path
 
 from jinja2 import UndefinedError
 
-from jflow.config import ConfigError, load_config
-from jflow.render import render_config
-from jflow.sources import build_source
+from jinja_flow.config import ConfigError, load_config
+from jinja_flow.render import render_config
+from jinja_flow.sources import build_source
 
 
 def main() -> None:

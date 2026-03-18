@@ -9,7 +9,7 @@ import pytest
 
 def run_jflow(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "-m", "jflow", *args],
+        [sys.executable, "-m", "jinja_flow", *args],
         capture_output=True,
         text=True,
         cwd=cwd,

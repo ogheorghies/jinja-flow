@@ -10,7 +10,7 @@ from typing import Any, Iterator
 
 import yaml
 
-from jflow.config import SourceDef
+from jinja_flow.config import SourceDef
 
 
 class FileResult:

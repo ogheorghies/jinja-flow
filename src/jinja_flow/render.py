@@ -8,7 +8,7 @@ from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from jflow.config import Config, RenderDef
+from jinja_flow.config import Config, RenderDef
 
 
 def render_config(

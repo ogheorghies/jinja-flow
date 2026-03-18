@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from jflow.sources import CsvSource, ExcelSource, FileResult, FileSource
+from jinja_flow.sources import CsvSource, ExcelSource, FileResult, FileSource
 
 
 # ── FileResult ───────────────────────────────────────────────────────────

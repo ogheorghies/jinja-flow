@@ -7,9 +7,9 @@ from textwrap import dedent
 import pytest
 import yaml
 
-from jflow.config import load_config
-from jflow.render import render_config
-from jflow.sources import CsvSource, FileSource, build_source
+from jinja_flow.config import load_config
+from jinja_flow.render import render_config
+from jinja_flow.sources import CsvSource, FileSource, build_source
 
 
 def _make_config(tmp_path, cfg_text: str) -> tuple:

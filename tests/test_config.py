@@ -6,7 +6,7 @@ from textwrap import dedent
 import pytest
 import yaml
 
-from jflow.config import ConfigError, load_config
+from jinja_flow.config import ConfigError, load_config
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
 [project]
-name = "jflow"
+name = "jinja-flow"
 version = "0.1.0"
 description = "Renders Jinja2 templates from a declarative YAML config"
 readme = "README.md"
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-jflow = "jflow:main"
+jflow = "jinja_flow:main"
 
 [build-system]
 requires = ["uv_build>=0.9.26,<0.10.0"]

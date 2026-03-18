@@ -1,13 +1,14 @@
 # jflow
 
-Renders Jinja2 templates from a declarative YAML config. Data sources — Excel, CSV, and file directories — are declared once in config and injected into templates as named variables. Adding a new data source never requires touching code.
+Renders Jinja2 templates from a declarative YAML config. Data sources — Excel, CSV, and file directories —
+are declared once in config and injected into templates as named variables. Adding a new data source never requires touching code.
 
 ## Installation
 
 ```bash
-pip install jflow
+pip install jinja-flow
 # or run directly without installing:
-uvx jflow config.yaml
+uvx --from jinja-flow jflow config.yaml
 ```
 
 ## Config file
@@ -17,20 +18,21 @@ A config file declares sources and a list of render jobs.
 ```yaml
 sources:
   products:  { type: excel, file: data/products.xlsx, sheet: Sheet1 }
-  specs:     { type: excel, file: data/specs.xlsx }
+  specs:     { type: csv, file: data/specs.csv }
   docs:      { type: files, path: ./docs, recursive: true }
   contracts: { type: files, path: ./contracts }
 
 renders:
-  - output: "outputs/{{ item.name }}.txt"
+  - output: "outputs/by-item/{{ item.name }}.txt"
     for: { products: item }
     template: prompts/analyze.j2
 
-  - output: outputs/all_prompts.txt
+  - output: outputs/joined/everything.txt
     for: { products: item, join: "\n---\n" }
     template: prompts/all_prompts.j2
 
   # any iteration (if needed) done inside the template
+  # if no output:, stdout is used
   - template: prompts/internal-for.j2
 
   # or inline:
@@ -191,8 +193,6 @@ output path is specified:
 - template: prompts/internal-for.j2
 ```
 
----
-
 ## Templates
 
 Templates are standard Jinja2 (`.j2` by convention). The following
@@ -306,10 +306,10 @@ directly:
 {{ docs.find(item.name ~ "_spec.md") }}
 ```
 
-### `ExcelSource` — `type: excel`
+### Tabular sources — `type: excel` / `type: csv`
 
-Non-primary Excel sources (i.e. not the one named in `for`) are available
-for cross-referencing via `.lookup()`.
+Non-primary tabular sources (i.e. not the one named in `for`) are
+available for cross-referencing via `.lookup()`.
 
 **`.lookup(key, value)`** — return the first row where `row[key] == value`
 as a dict. Returns an empty dict if not found.
@@ -325,8 +325,6 @@ Version: {{ meta.version }}
 
 **`.headers`** — list of column names.
 
----
-
 ## Example
 
 ### Directory layout
@@ -338,7 +336,7 @@ project/
 ├── sources.py
 ├── data/
 │   ├── products.xlsx
-│   └── specs.xlsx
+│   └── specs.csv
 ├── docs/
 │   ├── WidgetA_spec.md
 │   └── WidgetB_spec.md
@@ -354,7 +352,7 @@ project/
 ```yaml
 sources:
   products:  { type: excel, file: data/products.xlsx }
-  specs:     { type: excel, file: data/specs.xlsx }
+  specs:     { type: csv, file: data/specs.csv }
   docs:      { type: files, path: ./docs, recursive: true }
   contracts: { type: files, path: ./contracts }
 
@@ -408,8 +406,6 @@ uvx jflow config.yaml
 
 # preview without writing
 ```
-
----
 
 ## Error handling
 
