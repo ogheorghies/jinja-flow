@@ -8,7 +8,7 @@ are declared once in config and injected into templates as named variables. Addi
 ```bash
 pip install jinja-flow
 # or run directly without installing:
-uvx --from jinja-flow jflow config.yaml
+uvx jinja-flow config.yaml
 ```
 
 ## Config file
@@ -402,7 +402,7 @@ Summarize the product, highlight any risks, and suggest improvements.
 
 ```bash
 # write one file per product to outputs/
-uvx jflow config.yaml
+uvx jinja-flow config.yaml
 
 # preview without writing
 ```

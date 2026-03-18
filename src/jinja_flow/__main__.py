@@ -14,7 +14,7 @@ from jinja_flow.sources import build_source
 
 def main() -> None:
     if len(sys.argv) < 2:
-        print("Usage: jflow <config.yaml>", file=sys.stderr)
+        print("Usage: jinja-flow <config.yaml>", file=sys.stderr)
         sys.exit(1)
 
     config_path = Path(sys.argv[1])
