@@ -1,4 +1,4 @@
-# jflow
+# jinja-flow
 
 Renders Jinja2 templates from a declarative YAML config. Data sources — Excel, CSV, and file directories —
 are declared once in config and injected into templates as named variables. Adding a new data source never requires touching code.
@@ -332,8 +332,6 @@ Version: {{ meta.version }}
 ```
 project/
 ├── config.yaml
-├── render.py
-├── sources.py
 ├── data/
 │   ├── products.xlsx
 │   └── specs.csv
@@ -401,10 +399,7 @@ Summarize the product, highlight any risks, and suggest improvements.
 ### Running
 
 ```bash
-# write one file per product to outputs/
 uvx jinja-flow config.yaml
-
-# preview without writing
 ```
 
 ## Error handling
@@ -424,11 +419,11 @@ begins. The following are errors:
 
 - `join` present in a render entry without `for` — `join` is only valid
   with driver iteration
-- `output.file` using a Jinja expression (e.g. `{{ item.name }}`) without
+- `output` using a Jinja expression (e.g. `{{ item.name }}`) without
   `for` — per-row filenames require driver iteration
 - `for` referencing a source not declared in `sources`
-- `iterate_over` (legacy) or `for` pointing to a `type: files` source —
-  only `excel` and `csv` sources are iterable
+- `for` pointing to a `type: files` source — only `excel` and `csv`
+  sources are iterable
 
 Runtime errors raised during rendering:
 
