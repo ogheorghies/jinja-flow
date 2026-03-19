@@ -13,7 +13,9 @@ uvx jinja-flow config.yaml
 
 ## Config file
 
-A config file declares sources and a list of render jobs.
+A config file declares sources and a list of render jobs. All paths
+in the config (source files, template paths) are resolved relative to
+the config file's directory, not the working directory.
 
 ```yaml
 sources:

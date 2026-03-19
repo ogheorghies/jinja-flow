@@ -71,7 +71,10 @@ def load_config(path: str | Path) -> Config:
     base_dir = path.parent
 
     with open(path) as f:
-        raw = yaml.safe_load(f)
+        try:
+            raw = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            raise ConfigError(f"Invalid YAML: {e}") from e
 
     if not isinstance(raw, dict):
         raise ConfigError("Config must be a YAML mapping")
@@ -108,6 +111,12 @@ def load_config(path: str | Path) -> Config:
     # -- renders --
     renders: list[RenderDef] = []
     for i, rdef in enumerate(raw.get("renders") or []):
+        if not isinstance(rdef, dict):
+            raise ConfigError(
+                f"Render entry {i}: expected a mapping, got {type(rdef).__name__}: "
+                f"{str(rdef)[:80]!r}. Check for missing spaces in YAML keys "
+                f"(e.g. '-template:' should be '- template:')"
+            )
         template_raw = rdef.get("template")
         if template_raw is None:
             raise ConfigError(f"Render entry {i}: 'template' is required")

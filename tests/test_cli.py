@@ -81,3 +81,18 @@ class TestCLI:
         assert r.returncode == 0
         assert (out_dir / "Alpha.txt").read_text() == "Hello Alpha"
         assert (out_dir / "Beta.txt").read_text() == "Hello Beta"
+
+    def test_debug_flag(self, tmp_path):
+        (tmp_path / "items.csv").write_text("name,color\nApple,red\n")
+        cfg = tmp_path / "config.yaml"
+        cfg.write_text(
+            "sources:\n"
+            "  items: { type: csv, file: items.csv }\n"
+            "renders:\n"
+            "  - template: |-\n"
+            "      hello\n"
+        )
+        r = run_jflow("--debug", str(cfg), cwd=tmp_path)
+        assert r.returncode == 0
+        assert '"items" (csv)' in r.stderr
+        assert "name, color" in r.stderr

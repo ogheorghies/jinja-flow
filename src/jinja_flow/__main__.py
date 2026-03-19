@@ -1,4 +1,4 @@
-"""CLI entry point for jflow."""
+"""CLI entry point for jinja-flow."""
 
 from __future__ import annotations
 
@@ -9,15 +9,20 @@ from jinja2 import UndefinedError
 
 from jinja_flow.config import ConfigError, load_config
 from jinja_flow.render import render_config
-from jinja_flow.sources import build_source
+from jinja_flow.sources import FileSource, TabularSource, build_source
 
 
 def main() -> None:
-    if len(sys.argv) < 2:
-        print("Usage: jinja-flow <config.yaml>", file=sys.stderr)
+    args = sys.argv[1:]
+    debug = "--debug" in args
+    if debug:
+        args.remove("--debug")
+
+    if not args:
+        print("Usage: jinja-flow [--debug] <config.yaml>", file=sys.stderr)
         sys.exit(1)
 
-    config_path = Path(sys.argv[1])
+    config_path = Path(args[0])
 
     if not config_path.is_file():
         print(f"Error: file not found: {config_path}", file=sys.stderr)
@@ -33,6 +38,8 @@ def main() -> None:
         sources = {}
         for name, sdef in config.sources.items():
             sources[name] = build_source(sdef)
+            if debug:
+                _debug_source(name, sdef.type, sources[name])
     except Exception as e:
         print(f"Error loading source: {e}", file=sys.stderr)
         sys.exit(1)
@@ -42,6 +49,21 @@ def main() -> None:
     except UndefinedError as e:
         print(f"Template error: {e}", file=sys.stderr)
         sys.exit(1)
+
+
+def _debug_source(name: str, stype: str, source: TabularSource | FileSource) -> None:
+    if isinstance(source, TabularSource):
+        cols = ", ".join(source.headers)
+        if stype == "csv":
+            print(f'  "{name}" (csv) columns: {cols}', file=sys.stderr)
+        else:
+            print(
+                f'  "{name}" (excel) {len(source)} rows, '
+                f"columns: {cols}",
+                file=sys.stderr,
+            )
+    elif isinstance(source, FileSource):
+        print(f'  "{name}" (files) {source._base}', file=sys.stderr)
 
 
 if __name__ == "__main__":
