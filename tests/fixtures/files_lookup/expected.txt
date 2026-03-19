@@ -1,0 +1,3 @@
+WidgetA: WidgetA is a premium hardware component.
+WidgetB: WidgetB is a software module.
+WidgetC: no spec

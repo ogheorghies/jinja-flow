@@ -1,0 +1,1 @@
+WidgetB is a software module.

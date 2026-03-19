@@ -1,0 +1,6 @@
+sources:
+  products: { type: excel, file: products.xlsx }
+renders:
+  - template: |-
+      {{ item.name }}: {{ item.category }}
+    for: { products: item, join: "\n" }

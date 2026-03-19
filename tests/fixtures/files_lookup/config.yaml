@@ -1,0 +1,7 @@
+sources:
+  items: { type: csv, file: items.csv }
+  docs: { type: files, path: docs }
+renders:
+  - template: |-
+      {% for item in items %}{% set spec = docs.find(item.name ~ "_spec.md") %}{{ item.name }}: {% if spec %}{{ spec.content }}{% else %}no spec{% endif %}
+      {% endfor %}

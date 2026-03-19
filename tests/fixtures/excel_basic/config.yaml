@@ -1,0 +1,6 @@
+sources:
+  products: { type: excel, file: products.xlsx }
+renders:
+  - template: |-
+      {% for p in products %}{{ p.name }}: {{ p.category }}
+      {% endfor %}

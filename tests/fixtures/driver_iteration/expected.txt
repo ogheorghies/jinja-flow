@@ -1,0 +1,3 @@
+WidgetA: hardware
+WidgetB: software
+WidgetC: hardware

@@ -1,0 +1,1 @@
+WidgetA is a premium hardware component.

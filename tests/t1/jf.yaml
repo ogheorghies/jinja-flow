@@ -1,0 +1,6 @@
+sources:
+  lines: { type: excel, file: Untitled spreadsheet.xlsx }
+renders:
+  - template: |-
+      {% for line in lines %}{{ line.A }},{{line['Head C']}}
+      {% endfor %}

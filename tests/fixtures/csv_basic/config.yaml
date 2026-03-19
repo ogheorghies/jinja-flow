@@ -1,0 +1,6 @@
+sources:
+  items: { type: csv, file: items.csv }
+renders:
+  - template: |-
+      {% for item in items %}{{ item.name }} ${{ item.price }}
+      {% endfor %}
