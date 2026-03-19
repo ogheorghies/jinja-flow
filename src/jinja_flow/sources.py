@@ -142,12 +142,21 @@ class ExcelSource(TabularSource):
     def __init__(self, file: Path, sheet: str | None = None):
         from openpyxl import load_workbook
 
-        wb = load_workbook(file, read_only=True, data_only=True)
+        wb = load_workbook(file, data_only=True)
         ws = wb[sheet] if sheet else wb.active
-        row_iter = ws.iter_rows(values_only=True)
-        headers = [str(h) for h in next(row_iter)]
-        rows = [dict(zip(headers, vals)) for vals in row_iter]
+        raw_rows = list(ws.iter_rows(values_only=True))
         wb.close()
+        if not raw_rows:
+            super().__init__([], [])
+            return
+        # Use only columns that have a non-None header
+        header_row = raw_rows[0]
+        col_indices = [i for i, h in enumerate(header_row) if h is not None]
+        headers = [str(header_row[i]) for i in col_indices]
+        rows = [
+            {headers[j]: vals[i] for j, i in enumerate(col_indices) if i < len(vals)}
+            for vals in raw_rows[1:]
+        ]
         super().__init__(rows, headers)
 
 
